@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+<h1>{{ post.titull }}</h1>
+<small>By: {{ post.autor.username }}</small>
+<p>{{ post.trupi }}</p>
+
+{% block content %}
+<header class="masthead" style="background-image: url('../static/myblog/img/post-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>{{ post.titull }}</h1>
+            <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+            <span class="meta">Posted by
+              <a href="#">{{ post.autor.username }}</a>
+              on {{ post.post_date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <p>{{ post.trupi }}</p>
+
+          <a href="#">
+            <img class="img-fluid" src="img/post-sample-image.jpg" alt="">
+          </a>
+          <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+
+          <p>Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.</p>
+
+          <p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.</p>
+
+          <p>Placeholder text by
+            <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by
+            <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+
+    {% if user.is_authenticated %}
+        {% if user.id == post.autor.id %}
+
+        <div class="clearfix">
+            <a class="btn btn-danger float-right" href="{% url 'delete_post' post.id %}">Delete Post &rarr;</a>
+            <a class="btn btn-success float-right" href="{% url 'update_post' post.id %}">Update Post &rarr;</a>
+        </div>
+        {% else %}
+            <h4>Ky post eshte krijuar nga: <strong>{{ post.autor.username }}</strong> </h4>
+            <h4>Logohu me kete account: {{ post.autor.username }} ne menyre qe te beni ndryshime ne kete post</h4>
+
+        {% endif %}
+    <br>
+    <br>
+        <form action="{% url 'like_post' post.pk %}" method="POST">
+        {% csrf_token %}
+
+        <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-success">Like</button> -{{ post.likes.count }} Likes
+        </form>
+        <br>
+        <hr>
+        <br>
+    <h2>Komente...</h2>
+
+            <br>
+            <hr>
+
+            <form action="{% url 'add_koment' post.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="text", class="col-form-label" name="text_id", placeholder="Jep nje koment tendin...">
+                <button class="btn btn-primary" name="post_id", value="{{ post.id }}">Post</button>
+            </form>
+    {% endif %}
+
+        <br>
+        <hr>
+                {% if not post.koment_post.all %}
+            Ska Komente akoma....
+
+            {% else %}
+            {% for coments in post.koment_post.all %}
+               <strong> {{ coments.komentues }} - {{ coments.date_komenti }}</strong>
+                <br>
+                {{ coments.body }}
+                <br>
+                <br>
+            {% endfor %}
+        {% endif %}
+    <br>
+    <br>
+    <hr>
+{% endblock content %}
+</div>
+</div>
+</div>

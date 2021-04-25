@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <br>
+    <br>
+{% if user.is_authenticated %}
+    <h1>Add Post</h1>
+    <br>
+    <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-secondary">Post</button>
+    </form>
+{% else %}
+
+    <h1>Ju lutem logohuni qe te keni mundesi ta shtoni kete post</h1>
+    <button class="btn btn-success" href="{% url 'login' %}">Login</button>
+
+{% endif %}
+
+
+{% endblock content %}

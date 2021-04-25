@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Delete Post{% endblock title %}
+{% block content %}
+<br>
+<br>
+{% if user.is_authenticated %}
+
+    {% if user.id == post.autor.id %}
+
+<h1>Delete Post: <h3>{{ post.titull }}</h3></h1>
+    <br>
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            <strong>Jeni i sigurte</strong><br>
+            <button class="btn btn-danger float-left">Delete</button>
+        </form>
+    </div>
+
+    {% else %}
+        <h3>Ky post eshte krijuar nga: <strong>{{ post.autor.username }}</strong> </h3>
+        <h3>dhe vetem ai ka te dreja per ta fshire</h3>
+    {% endif %}
+{% else %}
+
+    <h1>Ju lutem logohuni qe te keni mundesi ta shtoni kete post</h1>
+    <button class="btn btn-success" href="{% url 'login' %}">Login</button>
+
+{% endif %}
+{% endblock content %}
