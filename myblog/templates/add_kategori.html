@@ -7,16 +7,16 @@
     <br>
     <br>
 {% if user.is_authenticated %}
-    <h1>Add Post</h1>
+    <h1>Shto Kategori</h1>
     <br>
     <form method="POST">
     {% csrf_token %}
     {{ form|crispy }}
-    <button class="btn btn-secondary">Post</button>
+    <button class="btn btn-secondary">Shto Kategori</button>
     </form>
 {% else %}
 
-    <h1>Ju lutem logohuni qe te keni mundesi ta shtoni kete post</h1>
+    <h1>Ju lutem logohuni qe te keni mundesi ta shtoni kategori</h1>
     <button class="btn btn-success" href="{% url 'login' %}">Login</button>
 
 {% endif %}

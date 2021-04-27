@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 from perdorues.models import Perdorues
-from .models import Post, Koment
+from .models import Post, Koment, Kategori
 from .forms import PostForm, UpdateForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 # def home(request):
 #     return render(request, 'home.html', {})
+
 
 def LikeView(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -31,11 +32,22 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
     #form_class = PostForm
     template_name = 'add_post.html'
-    fields = ('titull', 'trupi')
+    fields = ('titull','katekoria', 'trupi')
 
     def form_valid(self, form):
         form.instance.autor = self.request.user
         return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        print(10)
+        print(request.body)
+        print(request.data)
+        return super().post(request, args, kwargs)
+
+
+class AddKategoriView(CreateView):
+    model = Kategori
+    template_name = 'add_kategori.html'
+    fields = '__all__'
 
 @login_required
 def CreateKomentView(request, pk):
